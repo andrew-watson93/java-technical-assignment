@@ -26,24 +26,6 @@ class BasketTest {
     }
 
     @Test
-    @DisplayName("Multiple units for ItemByUnit are supported")
-    void multipleItemsByUnitTest() {
-        ItemByUnit item = new ItemByUnit(new Product(new BigDecimal("0.70")), 10);
-        assertThat(item.getQuantity()).isEqualTo(10);
-        assertThat(item.price()).isEqualTo(new BigDecimal("7.00"));
-    }
-
-    @Test
-    @DisplayName("By default ItemsByUnit do not have a discount")
-    void noDiscountByDefault() {
-        Item itemByUnit = new ItemByUnit(new Product(new BigDecimal("0.70")), 10);
-        Item itemByWeight = new ItemByWeight(new WeighedProduct(new BigDecimal("1.00")), BigDecimal.ONE);
-        assertThat(itemByUnit.getDiscountAmount())
-                .isEqualTo(itemByWeight.getDiscountAmount())
-                .isZero();
-    }
-
-    @Test
     @DisplayName("Buy one get one free is supported for ItemByUnit")
     void buyOneGetOneFree() {
         Product bogofProduct = new Product(new BigDecimal("0.70"), BuyOneGetOneFreeDiscount.getInstance());
@@ -53,6 +35,15 @@ class BasketTest {
         assertThat(basket.total()).isEqualTo(new BigDecimal("2.10"));
     }
 
+    @Test
+    @DisplayName("Half price for weight discount is supported for ItemByWeight")
+    void halfPriceByVolume() {
+        Item itemWithWeightDiscount = new WeighedProduct(new BigDecimal("5.00"), HalfPriceFor1Kg.getInstance()).weighing(new BigDecimal("2.5"));
+        Basket basket = new Basket();
+        basket.add(itemWithWeightDiscount);
+        assertThat(basket.total()).isEqualTo(new BigDecimal("7.50"));
+
+    }
 
     static Stream<Arguments> basketProvidesTotalValue() {
         return Stream.of(
