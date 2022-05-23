@@ -1,6 +1,7 @@
 package kata.supermarket;
 
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -10,6 +11,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.stream.Stream;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class BasketTest {
@@ -21,6 +23,14 @@ class BasketTest {
         final Basket basket = new Basket();
         items.forEach(basket::add);
         assertEquals(new BigDecimal(expectedTotal), basket.total());
+    }
+
+    @Test
+    @DisplayName("Multiple units for ItemByUnit are supported")
+    void multipleItemsByUnitTest() {
+        ItemByUnit item = new ItemByUnit(new Product(new BigDecimal("0.70")), 10);
+        assertThat(item.getQuantity()).isEqualTo(10);
+        assertThat(item.price()).isEqualTo(new BigDecimal("7.00"));
     }
 
     static Stream<Arguments> basketProvidesTotalValue() {

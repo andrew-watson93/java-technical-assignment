@@ -15,6 +15,6 @@ public class Product {
     }
 
     public Item oneOf() {
-        return new ItemByUnit(this);
+        return new ItemByUnit(this, 1);
     }
 }
