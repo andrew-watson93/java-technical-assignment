@@ -33,6 +33,17 @@ class BasketTest {
         assertThat(item.price()).isEqualTo(new BigDecimal("7.00"));
     }
 
+    @Test
+    @DisplayName("By default all ItemsByUnit do not have a discount")
+    void noDiscountByDefault() {
+        Item itemByUnit = new ItemByUnit(new Product(new BigDecimal("0.70")), 10);
+        Item itemByWeight = new ItemByWeight(new WeighedProduct(new BigDecimal("1.00")), BigDecimal.ONE);
+        assertThat(itemByUnit.getDiscountAmount())
+                .isEqualTo(itemByWeight.getDiscountAmount())
+                .isZero();
+    }
+
+
     static Stream<Arguments> basketProvidesTotalValue() {
         return Stream.of(
                 noItems(),
