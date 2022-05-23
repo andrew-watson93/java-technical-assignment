@@ -17,9 +17,13 @@ public class ItemByUnit implements Item {
         return product.pricePerUnit().multiply(BigDecimal.valueOf(quantity));
     }
 
+    public BigDecimal unitPrice() {
+        return product.pricePerUnit();
+    }
+
     @Override
     public BigDecimal getDiscountAmount() {
-        return BigDecimal.ZERO;
+        return product.getDiscount().getDiscountAmount(this);
     }
 
     public Integer getQuantity() {

@@ -2,7 +2,7 @@ package kata.supermarket;
 
 import java.math.BigDecimal;
 
-public class NoneDiscount {
+public class NoneDiscount implements Discount<Item> {
 
     private NoneDiscount() {
     }

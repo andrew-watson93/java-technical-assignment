@@ -34,13 +34,23 @@ class BasketTest {
     }
 
     @Test
-    @DisplayName("By default all ItemsByUnit do not have a discount")
+    @DisplayName("By default ItemsByUnit do not have a discount")
     void noDiscountByDefault() {
         Item itemByUnit = new ItemByUnit(new Product(new BigDecimal("0.70")), 10);
         Item itemByWeight = new ItemByWeight(new WeighedProduct(new BigDecimal("1.00")), BigDecimal.ONE);
         assertThat(itemByUnit.getDiscountAmount())
                 .isEqualTo(itemByWeight.getDiscountAmount())
                 .isZero();
+    }
+
+    @Test
+    @DisplayName("Buy one get one free is supported for ItemByUnit")
+    void buyOneGetOneFree() {
+        Product bogofProduct = new Product(new BigDecimal("0.70"), BuyOneGetOneFreeDiscount.getInstance());
+        Item bogofItem = new ItemByUnit(bogofProduct, 5);
+        Basket basket = new Basket();
+        basket.add(bogofItem);
+        assertThat(basket.total()).isEqualTo(new BigDecimal("2.10"));
     }
 
 
