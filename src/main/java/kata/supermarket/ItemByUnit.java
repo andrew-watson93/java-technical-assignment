@@ -23,7 +23,9 @@ public class ItemByUnit implements Item {
 
     @Override
     public BigDecimal getDiscountAmount() {
-        return product.getDiscount().getDiscountAmount(this);
+        Discount<ItemByUnit> discount = product.getDiscount();
+        if (discount == null) return BigDecimal.ZERO;
+        return discount.getDiscountAmount(this);
     }
 
     public Integer getQuantity() {

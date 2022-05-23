@@ -6,18 +6,18 @@ public class Product {
 
     private final BigDecimal pricePerUnit;
 
-    private Discount discount = NoneDiscount.getInstance();
+    private Discount<ItemByUnit> discount = null;
 
     public Product(final BigDecimal pricePerUnit) {
         this.pricePerUnit = pricePerUnit;
     }
 
-    public Product(final BigDecimal pricePerUnit, Discount discount) {
+    public Product(final BigDecimal pricePerUnit, Discount<ItemByUnit> discount) {
         this.pricePerUnit = pricePerUnit;
         this.discount = discount;
     }
 
-    Discount getDiscount() {
+    Discount<ItemByUnit> getDiscount() {
         return discount;
     }
 
