@@ -20,6 +20,6 @@ public class HalfPriceFor1Kg implements Discount<ItemByWeight> {
     public BigDecimal getDiscountAmount(ItemByWeight item) {
         if (item.getWeightInKilos().compareTo(BigDecimal.ONE) < 0) return BigDecimal.ZERO;
         BigDecimal fullKgs = item.getWeightInKilos().setScale(0, RoundingMode.DOWN);
-        return item.getProduct().pricePerKilo().divide(TWO, RoundingMode.HALF_UP).multiply(fullKgs);
+        return item.getProduct().pricePerKilo().divide(TWO, 2, RoundingMode.HALF_UP).multiply(fullKgs);
     }
 }

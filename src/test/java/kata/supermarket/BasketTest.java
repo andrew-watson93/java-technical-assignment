@@ -36,13 +36,49 @@ class BasketTest {
     }
 
     @Test
+    @DisplayName("Buy one get one free not applied when insufficient items")
+    void buyOneGetOneFreeNotAppliedWhenInSufficientItems() {
+        Product bogofProduct = new Product(new BigDecimal("0.70"), BuyOneGetOneFreeDiscount.getInstance());
+        Item bogofItem = new ItemByUnit(bogofProduct, 1);
+        Basket basket = new Basket();
+        basket.add(bogofItem);
+        assertThat(basket.total()).isEqualTo(new BigDecimal("0.70"));
+    }
+
+    @Test
     @DisplayName("Half price for weight discount is supported for ItemByWeight")
     void halfPriceByVolume() {
         Item itemWithWeightDiscount = new WeighedProduct(new BigDecimal("5.00"), HalfPriceFor1Kg.getInstance()).weighing(new BigDecimal("2.5"));
         Basket basket = new Basket();
         basket.add(itemWithWeightDiscount);
         assertThat(basket.total()).isEqualTo(new BigDecimal("7.50"));
+    }
 
+    @Test
+    @DisplayName("Half price for weight discount not applied for insufficient weight")
+    void halfPriceByVolumeNotAppliedWhenInsufficientWeight() {
+        Item itemWithWeightDiscount = new WeighedProduct(new BigDecimal("5.00"), HalfPriceFor1Kg.getInstance()).weighing(new BigDecimal("0.5"));
+        Basket basket = new Basket();
+        basket.add(itemWithWeightDiscount);
+        assertThat(basket.total()).isEqualTo(new BigDecimal("2.50"));
+    }
+
+    @Test
+    @DisplayName("Test with all types of item in basket")
+    void multipleItemsInBasketTest() {
+        Item singleItemByUnit = new Product(new BigDecimal("1.5")).oneOf();
+        Item multipleItemByUnit = new ItemByUnit(new Product(new BigDecimal("1")), 5);
+        Item multipleItemByUnitWithDiscount = new ItemByUnit(new Product(new BigDecimal("2"), BuyOneGetOneFreeDiscount.getInstance()), 3);
+        Item itemByWeight = new ItemByWeight(new WeighedProduct(new BigDecimal("2")), new BigDecimal("0.5"));
+        Item itemByWeightWithDiscount = new ItemByWeight(new WeighedProduct(new BigDecimal("3"), HalfPriceFor1Kg.getInstance()), new BigDecimal("1.5"));
+        Basket basket = new Basket();
+        basket.add(singleItemByUnit);
+        basket.add(multipleItemByUnit);
+        basket.add(multipleItemByUnitWithDiscount);
+        basket.add(itemByWeight);
+        basket.add(itemByWeightWithDiscount);
+
+        assertThat(basket.total()).isEqualTo(new BigDecimal("14.50"));
     }
 
     static Stream<Arguments> basketProvidesTotalValue() {
