@@ -10,7 +10,7 @@ public class BuyOneGetOneFreeDiscount implements Discount<ItemByUnit> {
         return instance;
     }
 
-    private static BuyOneGetOneFreeDiscount instance = new BuyOneGetOneFreeDiscount();
+    private final static BuyOneGetOneFreeDiscount instance = new BuyOneGetOneFreeDiscount();
 
     public BigDecimal getDiscountAmount(ItemByUnit item) {
         if (item.getQuantity() == 0) return BigDecimal.ZERO;

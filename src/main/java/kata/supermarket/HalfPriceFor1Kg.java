@@ -14,7 +14,7 @@ public class HalfPriceFor1Kg implements Discount<ItemByWeight> {
         return instance;
     }
 
-    private static HalfPriceFor1Kg instance = new HalfPriceFor1Kg();
+    private final static HalfPriceFor1Kg instance = new HalfPriceFor1Kg();
 
     @Override
     public BigDecimal getDiscountAmount(ItemByWeight item) {
